@@ -1,19 +1,33 @@
+.container {
+  width: 720px;
+  margin: 0 auto;
+  border: 3px solid black;
+  padding-left: 30px;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+}
+
 .racer_table td {
   border: solid black 1px;
-  background-color: white;
+  background-color: lightblue;
   height: 50px;
   width: 50px;
   color: black;
 }
 
-.racer_table .p1-active {
-  background-color: black;
+.racer_table .active {
+  background-color: red;
   border: solid gray 1px;
   color: white;
 }
 
-.racer_table .p2-active {
-  background-color: gray;
-  border: solid gray 1px;
-  color: white;
+#left {
+  float: left;
+  width: 200px;
+}
+
+#right {
+  float: right;
+  width: 200px;
 }

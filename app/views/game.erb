@@ -1,7 +1,15 @@
+<div class="container">
+
 <h1>Welcome to Ruby Racer !!</h1>
   <table class="racer_table">
-  <tr id="player1_strip" class="<%= @players[0] %>">
-    <td class="p1-active"></td>
+  <tr id="<%= @player1.name %>" class="<%= @player1.id %>">
+    <td class="active"></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -9,8 +17,14 @@
     <td></td>
     <td></td>
   </tr>
-  <tr id="player2_strip" class="<%= @players[1] %>">
-    <td class="p2-active"  ></td>
+  <tr id="<%= @player2.name %>" class="<%= @player2.id %>">
+    <td class="active"  ></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -19,6 +33,7 @@
     <td></td>
   </tr>
   </table>
-<h1 class="winning-msg"></h1>
+  <div class="winning-msg"></div>
+</div>
 
 

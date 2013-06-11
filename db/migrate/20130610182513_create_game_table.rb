@@ -1,10 +1,9 @@
 class CreateGameTable < ActiveRecord::Migration
   def change
     create_table :games do |t|
-      t.integer :winner
-      t.integer :player1
-      t.integer :player2
-      
+      t.string :winner
+      t.string :player1
+      t.string :player2
     end
   end
 end

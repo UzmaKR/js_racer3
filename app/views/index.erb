@@ -1,7 +1,17 @@
 <div name="container">
-  <form id="login" action="/players" method="post" name="player">
-    <input type="text" name="player[name]" placeholder="Name" required>
-    <input type="email" name="player[email]" placeholder="E-mail"required>
+
+  <h1> Player Login: </h1>
+  <% if @player && @player.errors.any? %>
+    <% @player.errors.full_messages.each do |err| %>
+          <%= p err %>
+    <% end %>
+  <% end %>
+
+  <form id="login" action="/game" method="post" >
+    <input type="text" name="player1[name]" placeholder="player1 name" required>
+    <input type="text" name="player1[email]" placeholder="player1 email" required>
+    <input type="text" name="player2[name]" placeholder="player2 name"required>
+    <input type="text" name="player2[email]" placeholder="player2 email"required>
     <input type="submit" value="Start Game">
   </form>
 </div>
