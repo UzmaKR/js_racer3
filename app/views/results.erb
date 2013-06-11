@@ -1,0 +1,10 @@
+<div name="container">
+  <h1> Game history for <%= @player1.name %> : </h1>
+   <% @player1.games.each do |game| %>
+      Game Id: <%= game.id %>
+      Winner: <%= Player.find(game.winner).name %>
+      Player1: <%= Player.find(game.player1).name %>
+      Player2: <%= Player.find(game.player2).name %>
+    <% end %>
+
+</div>

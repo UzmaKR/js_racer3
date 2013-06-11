@@ -1,7 +1,7 @@
 <div name="container">
-  <form id="login" action="/play" method="post">
-    <input type="text" name="name" placeholder="Name" required>
-    <input type="email" name="email" placeholder="E-mail"required>
+  <form id="login" action="/players" method="post" name="player">
+    <input type="text" name="player[name]" placeholder="Name" required>
+    <input type="email" name="player[email]" placeholder="E-mail"required>
     <input type="submit" value="Start Game">
   </form>
 </div>
