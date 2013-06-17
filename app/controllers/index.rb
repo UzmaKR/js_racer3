@@ -6,6 +6,9 @@ post '/game' do
   @player1 = Player.find_or_create_by_email(email: params[:player1][:email], name: params[:player1][:name])
   @player2 = Player.find_or_create_by_email(email: params[:player2][:email], name: params[:player2][:name])
   
+  p @player1
+  p @player2
+
   erb :game
 end
 

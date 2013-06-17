@@ -1,75 +1,91 @@
-$(document).ready(function(){
-
-  function Player(name) {
+function Player(name, key) {
     this.name = name;
+    this.keyCode = key.charCodeAt(0);
+    this.position = 0;
+}
+
+Player.prototype.move = function() {
+  this.position++;
+};
+
+  function Board() {}
+  Board.prototype.render = function(player1, player2) {
+    $('td').removeClass('active');
+    $('tr').first().find('td').eq(player1.position).addClass('active');
+    $('tr').last().find('td').eq(player2.position).addClass('active');
   }
 
-  Player.prototype.move = function() {
-    var target = '#' + this.name;
+  Board.prototype.renderWinner = function(htmlBody) {
+    $('.winning-msg').append(htmlBody);
+  }
 
-    var location = $(target).find('.active'); 
-    location.removeClass('active');
-    location.next().addClass('active');
-  };
+  function ConsoleBoard() {}
+  ConsoleBoard.prototype.render = function(player1, player2) {
+    console.log("Player 1 position ==>" + player1.position);
+    console.log("Player 2 position ==>" + player2.position); 
+  }
+  ConsoleBoard.prototype.renderWinner = function(htmlBody) {
+    console.log(htmlBody);
+  }
 
-  var player1 = new Player(($('tr').first().attr('id')));
-  var player2 = new Player(($('tr').last().attr('id')));
-
-
-
-  function Game(winner, player1, player2) {
+function Game(player1, player2) {
+    this.active = true;
     this.winner = 0;
+    this.trackLength = 13;  //number of table cells
     this.player1 = player1;
     this.player2 = player2;
+    this.board = new ConsoleBoard();
+    this.board.render(player1, player2);
+
   }
 
-  Game.prototype.call_server = function(winner) {
-      $.ajax({
+  // Game.prototype = {
+  //   playGame: function() {}
+  // }
+
+  Game.prototype.saveGameAndDeclareWinner = function(winner) {
+    var self = this;
+    this.active = false;
+    $.ajax({
       url: '/game/results',
       type: 'post',
-      data: {winner: winner.name, player1: player1.name, player2: player2.name}
+      data: { winner: this.winner.name, player1: this.player1.name, player2: this.player2.name }
     }).done(function(htmlBody) {
       console.log(htmlBody);
-      $('.winning-msg').append(htmlBody);
+      self.board.renderWinner(htmlBody);
     })
   };
 
-  Game.prototype.keyHandler = function(e) {
-    if (e.keyCode === "P".charCodeAt(0)) {
-      player1.move();
-    } else if (e.keyCode === "Q".charCodeAt(0)) {
-      player2.move();
-    }
+  Game.prototype.onKeyUp = function(e) {
+    if ( this.active ) {
+      if ( this.player1.position === this.trackLength-1 ) {
+        this.winner = this.player1;
+        this.saveGameAndDeclareWinner(this.winner);
+      } else if ( this.player2.position === this.trackLength-1 ) {
+        this.winner = this.player2;
+        this.saveGameAndDeclareWinner(this.winner);
+      } else {
+        if (e.keyCode === this.player1.keyCode) {
+          this.player1.move();
+        }  else if (e.keyCode === this.player2.keyCode) {
+          this.player2.move();
+        }
+      }
+      this.board.render(this.player1, this.player2);
+    } 
   }
 
-  Game.prototype.wrapupGame = function(winner) {
-    $(document).off('keyup');
-    Game.prototype.call_server(winner);
-  }
 
-  Game.prototype.playGame = function() {
-    this.reset();
-    $(document).on('keyup', function(e){
-      if ($('tr').first().children().last().hasClass('active')) {
-        winner = player1;
-        Game.prototype.wrapupGame(winner);
-      }
-      if ($('tr').last().children().last().hasClass('active')) {
-        winner = player2;
-        Game.prototype.wrapupGame(winner);
-      }
-      Game.prototype.keyHandler(e);
-    });
-  };
-  
-  
-  Game.prototype.reset = function() {
-    $('td').removeClass('active');
-    $('tr').first().children().first().addClass('active');
-    $('tr').last().children().first().addClass('active');
-  };
+$(document).ready(function(){
 
-  var new_game = new Game(0,player1, player2, 0);
-  new_game.playGame();
+  var player1Name = $('tr').first().attr('id');
+  var player2Name = $('tr').last().attr('id');
+
+  var player1 = new Player(player1Name, "P");
+  var player2 = new Player(player2Name, "Q");
+
+  var game = new Game(player1, player2);
+  
+  $(document).on('keyup', function(e) { game.onKeyUp(e); });
 });
 
